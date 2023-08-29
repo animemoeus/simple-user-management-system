@@ -1,21 +1,33 @@
 "use client";
 import { useEffect, useState } from "react";
 
+import { useDebounce } from "use-debounce";
 import { Search } from "../../components";
 
 import { getUsers } from "../../api";
 
 export default function User() {
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState(null);
 
-  const getUsersData = async () => {
-    const result = await getUsers();
+  const [_search, setSearch] = useState("");
+  const [search] = useDebounce(_search, 1000);
+
+  const getUsersData = async (search) => {
+    const result = await getUsers(search);
     setUsers(result);
   };
 
+  const onSearchChange = (text) => {
+    setSearch(text);
+  };
+
   useEffect(() => {
-    getUsersData();
+    getUsersData(search);
   }, []);
+
+  useEffect(() => {
+    getUsersData(search);
+  }, [search]);
 
   return (
     <div className="p-5">
@@ -24,7 +36,7 @@ export default function User() {
       </h1>
 
       <div className="my-1">
-        <Search />
+        <Search onSearchChange={(text) => onSearchChange(text)} />
       </div>
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
