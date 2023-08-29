@@ -6,7 +6,7 @@ from .serializers import UserSerializer
 
 
 class ListCreateUserView(ListCreateAPIView):
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by("-id")
     serializer_class = UserSerializer
 
     filter_backends = [filters.SearchFilter]
