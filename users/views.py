@@ -9,8 +9,9 @@ class ListCreateUserView(ListCreateAPIView):
     queryset = User.objects.all().order_by("-id")
     serializer_class = UserSerializer
 
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["first_name", "last_name", "address"]
+    ordering_fields = ["first_name", "last_name", "address"]
 
 
 class RetrieveUpdateDestroyUserView(RetrieveUpdateDestroyAPIView):
