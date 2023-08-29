@@ -1,0 +1,83 @@
+"use client";
+import { useEffect, useState } from "react";
+
+import { Search } from "../../components";
+
+import { getUsers } from "../../api";
+
+export default function User() {
+  const [users, setUsers] = useState();
+
+  const getUsersData = async () => {
+    const result = await getUsers();
+    setUsers(result);
+  };
+
+  useEffect(() => {
+    getUsersData();
+  }, []);
+
+  return (
+    <div className="p-5">
+      <h1 className="text-center text-2xl font-medium mt-2 mb-6">
+        Simple User Management
+      </h1>
+
+      <div className="my-1">
+        <Search />
+      </div>
+
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                First Name
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Last Name
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Address
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Last Updated
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {users?.results.map((user, index) => {
+              return (
+                <tr
+                  key={index}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                >
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    {user.first_name}
+                  </th>
+                  <td className="px-6 py-4">{user.last_name}</td>
+                  <td className="px-6 py-4">{user.address}</td>
+                  <td className="px-6 py-4">{user.updated_at}</td>
+                  <td className="px-6 py-4 ">
+                    <a
+                      href="#"
+                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    >
+                      Edit
+                    </a>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
