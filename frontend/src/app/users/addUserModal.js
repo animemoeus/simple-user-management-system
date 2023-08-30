@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 
 import { addUser as addUserAPI } from "../../api";
 
-export default function Modal() {
+export default function Modal(props) {
   const [showModal, setShowModal] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const {
@@ -27,6 +27,7 @@ export default function Modal() {
       isClosable: true,
       position: "top-right",
     });
+    props.updateTable();
   };
 
   return (

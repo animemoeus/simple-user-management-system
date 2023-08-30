@@ -43,7 +43,7 @@ export default function User() {
           Simple User Management
         </h1>
         <span className="self-center">
-          <AddUserModal />
+          <AddUserModal updateTable={() => getUsersData(search, currentPage)} />
         </span>
       </div>
 
