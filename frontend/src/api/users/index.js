@@ -1,13 +1,13 @@
 const API_URL = "https://simple-user-management.arter.my.id";
 
-async function getUsers(search, page) {
+async function getUsers(search, page, orderBy) {
   const requestOptions = {
     method: "GET",
     redirect: "follow",
   };
 
   const response = await fetch(
-    `${API_URL}/users/?search=${search}&page=${page}`,
+    `${API_URL}/users/?search=${search}&page=${page}&ordering=${orderBy}`,
     requestOptions
   );
 

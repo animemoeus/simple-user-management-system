@@ -13,11 +13,12 @@ export default function User() {
   const [currentPage, setCurrentPage] = useState(1);
   const [canPrevPage, setCanPrevPage] = useState(false);
   const [canNextPage, setCanNextPage] = useState(false);
+  const [orderBy, setOrderBy] = useState("");
   const [_search, setSearch] = useState("");
   const [search] = useDebounce(_search, 1000);
 
-  const getUsersData = async (search, currentPage) => {
-    const result = await getUsers(search, currentPage);
+  const getUsersData = async (search, currentPage, orderBy) => {
+    const result = await getUsers(search, currentPage, orderBy);
     setCanPrevPage(Boolean(result?.previous));
     setCanNextPage(Boolean(result?.next));
     setUsers(result);
@@ -29,12 +30,12 @@ export default function User() {
   };
 
   useEffect(() => {
-    getUsersData(search, currentPage);
+    getUsersData(search, currentPage, orderBy);
   }, []);
 
   useEffect(() => {
-    getUsersData(search, currentPage);
-  }, [search, currentPage]);
+    getUsersData(search, currentPage, orderBy);
+  }, [search, currentPage, orderBy]);
 
   return (
     <div className="p-5">
@@ -43,7 +44,9 @@ export default function User() {
           Simple User Management
         </h1>
         <span className="self-center">
-          <AddUserModal updateTable={() => getUsersData(search, currentPage)} />
+          <AddUserModal
+            updateTable={() => getUsersData(search, currentPage, orderBy)}
+          />
         </span>
       </div>
 
@@ -62,16 +65,79 @@ export default function User() {
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
-                First Name
+                <div className="flex item-center">
+                  First Name{" "}
+                  <button
+                    onClick={() => {
+                      if (orderBy[0] === "-") {
+                        setOrderBy("first_name");
+                      } else {
+                        setOrderBy("-first_name");
+                      }
+                    }}
+                  >
+                    <svg
+                      className="w-3 h-3 ml-1.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                    </svg>
+                  </button>
+                </div>
               </th>
               <th scope="col" className="px-6 py-3">
-                Last Name
+                <div className="flex item-center">
+                  Last Name{" "}
+                  <button
+                    onClick={() => {
+                      if (orderBy[0] === "-") {
+                        setOrderBy("last_name");
+                      } else {
+                        setOrderBy("-last_name");
+                      }
+                    }}
+                  >
+                    <svg
+                      className="w-3 h-3 ml-1.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                    </svg>
+                  </button>
+                </div>
               </th>
               <th scope="col" className="px-6 py-3">
-                Address
+                <div className="flex item-center">
+                  Address{" "}
+                  <button
+                    onClick={() => {
+                      if (orderBy[0] === "-") {
+                        setOrderBy("address");
+                      } else {
+                        setOrderBy("-address");
+                      }
+                    }}
+                  >
+                    <svg
+                      className="w-3 h-3 ml-1.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                    </svg>
+                  </button>
+                </div>
               </th>
               <th scope="col" className="px-6 py-3">
-                Last Updated
+                <div className="flex item-center">Last Updated</div>
               </th>
               <th scope="col" className="px-6 py-3">
                 Actions
@@ -97,7 +163,9 @@ export default function User() {
                   <td className="px-6 py-4 ">
                     <EditUserModal
                       user={user}
-                      updateTable={() => getUsersData(search, currentPage)}
+                      updateTable={() =>
+                        getUsersData(search, currentPage, orderBy)
+                      }
                     />
                     <button
                       className="mx-1 shadow hover:shadow-md text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-0 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-2"
@@ -111,7 +179,7 @@ export default function User() {
                           if ((await getUsers(search, currentPage)) === null) {
                             setCurrentPage(currentPage - 1);
                           }
-                          getUsersData(search, currentPage);
+                          getUsersData(search, currentPage, orderBy);
                         }
                       }}
                     >
