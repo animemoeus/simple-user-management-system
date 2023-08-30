@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 
 import { useDebounce } from "use-debounce";
-import { Search } from "../../components";
 import AddUserModal from "./addUserModal";
+import SearchUser from "./searchUser";
 
 import { getUsers } from "../../api";
 
@@ -42,7 +42,7 @@ export default function User() {
       </div>
 
       <div className="my-3">
-        <Search onSearchChange={(text) => onSearchChange(text)} />
+        <SearchUser onSearchChange={(text) => onSearchChange(text)} />
       </div>
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

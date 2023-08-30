@@ -1,4 +1,4 @@
-export default function Search(props) {
+export default function SearchUser(props) {
   return (
     <form>
       <div className="relative">
