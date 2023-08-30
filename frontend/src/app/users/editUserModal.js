@@ -30,7 +30,6 @@ export default function EditUserModal({ user, updateTable }) {
         return response.json();
       })
       .then((response) => {
-        console.log(response);
         for (const key in response) {
           setValue(key, response[key]);
         }
