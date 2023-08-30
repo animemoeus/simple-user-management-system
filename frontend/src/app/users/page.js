@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { useDebounce } from "use-debounce";
 import { Search } from "../../components";
+import AddUserModal from "./addUserModal";
 
 import { getUsers } from "../../api";
 
@@ -31,11 +32,16 @@ export default function User() {
 
   return (
     <div className="p-5">
-      <h1 className="text-center text-2xl font-medium mt-2 mb-6">
-        Simple User Management
-      </h1>
+      <div className="flex  mt-2 mb-6">
+        <h1 className="flex-auto block text-center text-2xl font-medium">
+          Simple User Management
+        </h1>
+        <span className="self-center">
+          <AddUserModal />
+        </span>
+      </div>
 
-      <div className="my-1">
+      <div className="my-3">
         <Search onSearchChange={(text) => onSearchChange(text)} />
       </div>
 
