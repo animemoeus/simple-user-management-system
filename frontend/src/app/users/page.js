@@ -156,7 +156,9 @@ export default function User() {
                   </th>
                   <td className="px-6 py-4">{user.last_name}</td>
                   <td className="px-6 py-4">{user.address}</td>
-                  <td className="px-6 py-4">{user.updated_at}</td>
+                  <td className="px-6 py-4">
+                    {new Date(user.updated_at).toLocaleString()}
+                  </td>
                   <td className="px-6 py-4 ">
                     <EditUserModal
                       user={user}
