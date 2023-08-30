@@ -1,11 +1,11 @@
-async function getUsers(search) {
+async function getUsers(search, page) {
   const requestOptions = {
     method: "GET",
     redirect: "follow",
   };
 
   const response = await fetch(
-    `http://localhost:8000/users/?search=${search}`,
+    `http://localhost:8000/users/?search=${search}&page=${page}`,
     requestOptions
   );
   return await response.json();

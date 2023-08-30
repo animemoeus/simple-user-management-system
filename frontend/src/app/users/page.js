@@ -9,26 +9,31 @@ import { getUsers } from "../../api";
 
 export default function User() {
   const [users, setUsers] = useState(null);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [canPrevPage, setCanPrevPage] = useState(false);
+  const [canNextPage, setCanNextPage] = useState(false);
   const [_search, setSearch] = useState("");
   const [search] = useDebounce(_search, 1000);
 
-  const getUsersData = async (search) => {
-    const result = await getUsers(search);
+  const getUsersData = async (search, currentPage) => {
+    const result = await getUsers(search, currentPage);
+    setCanPrevPage(Boolean(result?.previous));
+    setCanNextPage(Boolean(result?.next));
     setUsers(result);
   };
 
   const onSearchChange = (text) => {
     setSearch(text);
+    setCurrentPage(1);
   };
 
   useEffect(() => {
-    getUsersData(search);
+    getUsersData(search, currentPage);
   }, []);
 
   useEffect(() => {
-    getUsersData(search);
-  }, [search]);
+    getUsersData(search, currentPage);
+  }, [search, currentPage]);
 
   return (
     <div className="p-5">
@@ -42,7 +47,13 @@ export default function User() {
       </div>
 
       <div className="my-3">
-        <SearchUser onSearchChange={(text) => onSearchChange(text)} />
+        <SearchUser
+          onSearchChange={(text) => onSearchChange(text)}
+          onPaginationChange={(page) => setCurrentPage(page)}
+          currentPage={currentPage}
+          canPrevPage={canPrevPage}
+          canNextPage={canNextPage}
+        />
       </div>
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

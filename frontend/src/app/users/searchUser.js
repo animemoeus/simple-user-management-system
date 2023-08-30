@@ -1,4 +1,7 @@
+import { useToast } from "@chakra-ui/react";
+
 export default function SearchUser(props) {
+  const toast = useToast();
   return (
     <div className="flex justify-between">
       <form className="w-full mr-2">
@@ -31,9 +34,20 @@ export default function SearchUser(props) {
       </form>
 
       <div className="flex items-center">
-        <a
-          href="#"
+        <button
           className=" shadow flex items-center justify-center px-4 h-10 mr-3 text-base font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700"
+          onClick={() => {
+            if (props.canPrevPage) {
+              props.onPaginationChange(props.currentPage - 1);
+            } else {
+              toast({
+                description: "This is the end of the pagination",
+                status: "warning",
+                isClosable: true,
+                position: "bottom-right",
+              });
+            }
+          }}
         >
           <svg
             className="w-3.5 h-3.5 mr-2"
@@ -50,10 +64,21 @@ export default function SearchUser(props) {
               d="M13 5H1m0 0 4 4M1 5l4-4"
             />
           </svg>
-        </a>
-        <a
-          href="#"
+        </button>
+        <button
           className="shadow flex items-center justify-center px-4 h-10 text-base font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700"
+          onClick={() => {
+            if (props.canNextPage) {
+              props.onPaginationChange(props.currentPage + 1);
+            } else {
+              toast({
+                description: "This is the end of the pagination",
+                status: "warning",
+                isClosable: true,
+                position: "bottom-right",
+              });
+            }
+          }}
         >
           <svg
             className="w-3.5 h-3.5 ml-2"
@@ -70,7 +95,7 @@ export default function SearchUser(props) {
               d="M1 5h12m0 0L9 1m4 4L9 9"
             />
           </svg>
-        </a>
+        </button>
       </div>
     </div>
   );
