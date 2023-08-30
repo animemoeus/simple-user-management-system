@@ -13,7 +13,7 @@ export default function EditUserModal({ user, updateTable }) {
     setValue,
     reset,
     formState: { errors },
-  } = useForm({ defaultValues: user });
+  } = useForm();
 
   const toast = useToast();
 
@@ -81,11 +81,12 @@ export default function EditUserModal({ user, updateTable }) {
   return (
     <>
       <button
-        data-modal-target="addUserModal"
-        data-modal-toggle="addUserModal"
         type="button"
         className="shadow hover:shadow-md text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-0 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-2"
-        onClick={() => setShowModal(!showModal)}
+        onClick={() => {
+          setShowModal(!showModal);
+          reset(user);
+        }}
       >
         Edit
       </button>
@@ -115,7 +116,6 @@ export default function EditUserModal({ user, updateTable }) {
                     className="w-100"
                     onSubmit={handleSubmit((data) => {
                       handleFormSubmit(data);
-                      // console.log(data);
                     })}
                   >
                     <div className="mb-6">
@@ -126,12 +126,11 @@ export default function EditUserModal({ user, updateTable }) {
                         First Name
                       </label>
                       <input
+                        {...register("first_name")}
                         type="text"
                         id="firstName"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-none focus:ring-1 focus:ring-gray-500 block w-full p-2.5 "
                         required
-                        // value={user.first_name}
-                        {...register("first_name")}
                       />
                     </div>
                     <div className="mb-6">
