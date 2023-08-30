@@ -1,3 +1,5 @@
+const API_URL = "https://simple-user-management.arter.my.id";
+
 async function getUsers(search, page) {
   const requestOptions = {
     method: "GET",
@@ -5,7 +7,7 @@ async function getUsers(search, page) {
   };
 
   const response = await fetch(
-    `http://localhost:8000/users/?search=${search}&page=${page}`,
+    `${API_URL}/users/?search=${search}&page=${page}`,
     requestOptions
   );
 
@@ -28,7 +30,7 @@ async function addUser(userData) {
     redirect: "follow",
   };
 
-  const response = await fetch("http://localhost:8000/users/", requestOptions);
+  const response = await fetch(`${API_URL}/users/`, requestOptions);
   return await response.json();
 }
 
@@ -45,10 +47,10 @@ async function editUser(userData) {
   };
 
   const response = await fetch(
-    `http://localhost:8000/users/${userData.id}/`,
+    `${API_URL}/users/${userData.id}/`,
     requestOptions
   );
-  return await response.json();
+  return response;
 }
 
 async function deleteUser(userID) {
@@ -61,10 +63,7 @@ async function deleteUser(userID) {
     redirect: "follow",
   };
 
-  const response = await fetch(
-    `http://localhost:8000/users/${userID}/`,
-    requestOptions
-  );
+  const response = await fetch(`${API_URL}/users/${userID}/`, requestOptions);
   return response.status;
 }
 

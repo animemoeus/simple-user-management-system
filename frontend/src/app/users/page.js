@@ -95,7 +95,11 @@ export default function User() {
                   <td className="px-6 py-4">{user.address}</td>
                   <td className="px-6 py-4">{user.updated_at}</td>
                   <td className="px-6 py-4 ">
-                    <EditUserModal user={user} /> /{" "}
+                    <EditUserModal
+                      user={user}
+                      updateTable={() => getUsersData(search, currentPage)}
+                    />{" "}
+                    /{" "}
                     <button
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       onClick={async () => {

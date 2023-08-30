@@ -2,9 +2,9 @@ import { useToast } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
 
-import { editUser as editUserAPI } from "../../api";
+import { editUser as editUserAPI } from "@/api";
 
-export default function EditUserModal({ user }) {
+export default function EditUserModal({ user, updateTable }) {
   const [showModal, setShowModal] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const {
@@ -17,21 +17,60 @@ export default function EditUserModal({ user }) {
 
   const toast = useToast();
 
-  const handleFormSubmit = async (data) => {
+  const handleFormSubmit = (data) => {
     setIsLoading(true);
-    const response = await editUserAPI(data);
 
-    // update the from value
-    setValue("first_name", response.first_name);
-    setValue("last_name", response.last_name);
-    setValue("address", response.address);
-    setIsLoading(false);
-    toast({
-      description: "Updated",
-      status: "success",
-      isClosable: true,
-      position: "top-right",
-    });
+    editUserAPI(data)
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((errorData) => {
+            throw new Error(JSON.stringify(errorData));
+          });
+        }
+        return response.json();
+      })
+      .then((response) => {
+        console.log(response);
+        for (const key in response) {
+          setValue(key, response[key]);
+        }
+
+        for (const key in response) {
+          user[key] = response[key];
+        }
+
+        toast({
+          description: "Updated",
+          status: "success",
+          isClosable: true,
+          position: "top-right",
+        });
+      })
+      .catch((error) => {
+        try {
+          const errorObject = JSON.parse(error.message);
+          for (const key in errorObject) {
+            setValue(key, user[key]);
+            toast({
+              description: errorObject[key],
+              status: "warning",
+              isClosable: true,
+              position: "top-right",
+            });
+          }
+        } catch (parseError) {
+          toast({
+            description: parseError.message,
+            status: "error",
+            isClosable: true,
+            position: "top-right",
+          });
+        }
+      })
+      .finally(() => {
+        updateTable();
+        setIsLoading(false);
+      });
   };
 
   React.useEffect(() => {
