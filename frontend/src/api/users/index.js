@@ -27,4 +27,21 @@ async function addUser(userData) {
   return await response.json();
 }
 
-export { addUser, getUsers };
+async function deleteUser(userID) {
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  var requestOptions = {
+    method: "DELETE",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  const response = await fetch(
+    `http://localhost:8000/users/${userID}/`,
+    requestOptions
+  );
+  return await response.status;
+}
+
+export { addUser, deleteUser, getUsers };

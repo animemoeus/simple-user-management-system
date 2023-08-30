@@ -5,7 +5,7 @@ import { useDebounce } from "use-debounce";
 import AddUserModal from "./addUserModal";
 import SearchUser from "./searchUser";
 
-import { getUsers } from "../../api";
+import { deleteUser, getUsers } from "../../api";
 
 export default function User() {
   const [users, setUsers] = useState(null);
@@ -99,7 +99,23 @@ export default function User() {
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                     >
                       Edit
-                    </a>
+                    </a>{" "}
+                    /{" "}
+                    <button
+                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                      onClick={async () => {
+                        const del = confirm(
+                          "Are you sure you want to delete this?"
+                        );
+
+                        if (del) {
+                          await deleteUser(user.id);
+                          getUsersData(search, currentPage);
+                        }
+                      }}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               );
