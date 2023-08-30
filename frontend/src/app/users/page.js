@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { useDebounce } from "use-debounce";
 import AddUserModal from "./addUserModal";
+import EditUserModal from "./editUserModal";
 import SearchUser from "./searchUser";
 
 import { deleteUser, getUsers } from "../../api";
@@ -94,13 +95,7 @@ export default function User() {
                   <td className="px-6 py-4">{user.address}</td>
                   <td className="px-6 py-4">{user.updated_at}</td>
                   <td className="px-6 py-4 ">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    >
-                      Edit
-                    </a>{" "}
-                    /{" "}
+                    <EditUserModal user={user} /> /{" "}
                     <button
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       onClick={async () => {

@@ -32,6 +32,25 @@ async function addUser(userData) {
   return await response.json();
 }
 
+async function editUser(userData) {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  const raw = JSON.stringify(userData);
+
+  const requestOptions = {
+    method: "PATCH",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow",
+  };
+
+  const response = await fetch(
+    `http://localhost:8000/users/${userData.id}/`,
+    requestOptions
+  );
+  return await response.json();
+}
+
 async function deleteUser(userID) {
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -49,4 +68,4 @@ async function deleteUser(userID) {
   return response.status;
 }
 
-export { addUser, deleteUser, getUsers };
+export { addUser, deleteUser, editUser, getUsers };
