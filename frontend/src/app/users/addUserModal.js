@@ -1,7 +1,34 @@
+import { useToast } from "@chakra-ui/react";
 import React from "react";
+import { useForm } from "react-hook-form";
+
+import { addUser as addUserAPI } from "../../api";
 
 export default function Modal() {
   const [showModal, setShowModal] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const toast = useToast();
+
+  const handleFormSubmit = async (data) => {
+    setIsLoading(true);
+    await addUserAPI(data);
+    reset();
+    setIsLoading(false);
+    toast({
+      description: "User Added",
+      status: "success",
+      isClosable: true,
+      position: "top-right",
+    });
+  };
+
   return (
     <>
       <button
@@ -21,7 +48,7 @@ export default function Modal() {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 className="text-2xl font-semibold">Add user</h3>
+                  <h3 className="text-2xl font-semibold">Add User</h3>
                   <button
                     className="ml-auto bg-transparent border-0 text-black  float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowModal(false)}
@@ -33,7 +60,12 @@ export default function Modal() {
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  <form className="w-100">
+                  <form
+                    className="w-100"
+                    onSubmit={handleSubmit((data) => {
+                      handleFormSubmit(data);
+                    })}
+                  >
                     <div className="mb-6">
                       <label
                         htmlFor="firstName"
@@ -43,9 +75,11 @@ export default function Modal() {
                       </label>
                       <input
                         type="text"
-                        id="firstname"
+                        id="firstName"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-none focus:ring-1 focus:ring-gray-500 block w-full p-2.5 "
                         autoFocus
+                        required
+                        {...register("first_name")}
                       />
                     </div>
                     <div className="mb-6">
@@ -57,8 +91,10 @@ export default function Modal() {
                       </label>
                       <input
                         type="text"
-                        id="lastname"
+                        id="lastName"
+                        required
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-none focus:ring-1 focus:ring-gray-500 block w-full p-2.5 "
+                        {...register("last_name")}
                       />
                     </div>
                     <div className="mb-6">
@@ -71,28 +107,38 @@ export default function Modal() {
                       <input
                         type="text"
                         id="address"
+                        required
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-none focus:ring-1 focus:ring-gray-500 block w-full p-2.5 "
+                        {...register("address")}
                       />
+                    </div>
+                    <div className="flex items-center justify-end pt-4 border-t border-solid border-slate-200 rounded-b">
+                      <button
+                        className="text-red-500 background-transparent font-bold px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        type="button"
+                        // onClick={() => setShowModal(false)}
+                        onClick={() =>
+                          toast({
+                            description: "User Added",
+                            status: "success",
+                            isClosable: true,
+                            position: "top-right",
+                          })
+                        }
+                      >
+                        Close
+                      </button>
+                      <button
+                        className="bg-emerald-500 text-white active:bg-emerald-600 font-bold text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        type="submit"
+                        // onClick={() => reset()}
+                      >
+                        {isLoading ? "Loading..." : "Save Changes"}
+                      </button>
                     </div>
                   </form>
                 </div>
                 {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                  <button
-                    className="text-red-500 background-transparent font-bold px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                  >
-                    Close
-                  </button>
-                  <button
-                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                  >
-                    Save Changes
-                  </button>
-                </div>
               </div>
             </div>
           </div>
