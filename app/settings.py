@@ -30,7 +30,9 @@ SECRET_KEY = "django-insecure-f8lklbek0#dai$2bmf&6$!$8w7%3=!$fpp$34fpl^xmw#a!4$4
 DEBUG = os.environ.get("DEBUG", False)
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "simple-user-management.arter.my.id",
+]
 if DEBUG:
     ALLOWED_HOSTS.append("*")
 
