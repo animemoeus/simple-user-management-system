@@ -8,6 +8,11 @@ async function getUsers(search, page) {
     `http://localhost:8000/users/?search=${search}&page=${page}`,
     requestOptions
   );
+
+  if (!response.ok) {
+    return null;
+  }
+
   return await response.json();
 }
 
@@ -41,7 +46,7 @@ async function deleteUser(userID) {
     `http://localhost:8000/users/${userID}/`,
     requestOptions
   );
-  return await response.status;
+  return response.status;
 }
 
 export { addUser, deleteUser, getUsers };

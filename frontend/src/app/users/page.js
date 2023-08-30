@@ -78,7 +78,7 @@ export default function User() {
             </tr>
           </thead>
           <tbody>
-            {users?.results.map((user, index) => {
+            {users?.results?.map((user, index) => {
               return (
                 <tr
                   key={index}
@@ -110,6 +110,9 @@ export default function User() {
 
                         if (del) {
                           await deleteUser(user.id);
+                          if ((await getUsers(search, currentPage)) === null) {
+                            setCurrentPage(currentPage - 1);
+                          }
                           getUsersData(search, currentPage);
                         }
                       }}
