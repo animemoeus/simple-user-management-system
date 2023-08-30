@@ -38,3 +38,4 @@ next-env.d.ts
 env
 *.pyc
 db.sqlite3
+.env
