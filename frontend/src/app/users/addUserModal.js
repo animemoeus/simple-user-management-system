@@ -16,18 +16,51 @@ export default function Modal(props) {
 
   const toast = useToast();
 
-  const handleFormSubmit = async (data) => {
+  const handleFormSubmit = (data) => {
     setIsLoading(true);
-    await addUserAPI(data);
-    reset();
-    setIsLoading(false);
-    toast({
-      description: "User Added",
-      status: "success",
-      isClosable: true,
-      position: "top-right",
-    });
-    props.updateTable();
+
+    addUserAPI(data)
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((errorData) => {
+            throw new Error(JSON.stringify(errorData));
+          });
+        }
+        return response.json();
+      })
+      .then(() => {
+        reset();
+        toast({
+          description: "Updated",
+          status: "success",
+          isClosable: true,
+          position: "top-right",
+        });
+      })
+      .catch((error) => {
+        try {
+          const errorObject = JSON.parse(error.message);
+          for (const key in errorObject) {
+            toast({
+              description: errorObject[key],
+              status: "warning",
+              isClosable: true,
+              position: "top-right",
+            });
+          }
+        } catch (parseError) {
+          toast({
+            description: parseError.message,
+            status: "error",
+            isClosable: true,
+            position: "top-right",
+          });
+        }
+      })
+      .finally(() => {
+        props.updateTable();
+        setIsLoading(false);
+      });
   };
 
   return (

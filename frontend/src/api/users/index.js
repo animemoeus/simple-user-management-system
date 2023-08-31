@@ -31,7 +31,8 @@ async function addUser(userData) {
   };
 
   const response = await fetch(`${API_URL}/users/`, requestOptions);
-  return await response.json();
+
+  return response;
 }
 
 async function editUser(userData) {
