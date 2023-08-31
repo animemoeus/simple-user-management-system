@@ -31,7 +31,7 @@ export default function Modal(props) {
       .then(() => {
         reset();
         toast({
-          description: "Updated",
+          description: "Saved",
           status: "success",
           isClosable: true,
           position: "top-right",
